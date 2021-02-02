@@ -47,7 +47,7 @@ const playerMaker = (mark, human) => {
 
     };
 
-    return { mark, isHuman, markTheGrid, getXTurn, switchTurn }
+    return { mark, human, isHuman, markTheGrid, getXTurn, switchTurn }
 };
 
 const gameCheck = (currentPlayer) => {
@@ -84,6 +84,9 @@ const gameCheck = (currentPlayer) => {
         resultBoard.classList.remove('hide');
         resultBoard.classList.add('show');
         restartButton.classList.remove('hide');
+
+        gameBoard.xHumanBtn.disabled = false;
+        gameBoard.oHumanBtn.disabled = false;
 
         if (didWin) {
             resultMessage.innerText = "Player " + currentPlayer.mark + " Won!";
@@ -183,6 +186,10 @@ function resetGame() {
     gameBoard.oHumanBtn.classList.add('hide');
     gameBoard.xHumanBtn.disabled = false;
     gameBoard.oHumanBtn.disabled = false;
+
+    gameBoard.playerXstatus.innerText = gameBoard.xHumanBtn.dataset.ishuman;
+    gameBoard.playerOstatus.innerText = gameBoard.oHumanBtn.dataset.ishuman;
+
 
     //  let newGameStartBtn = gameStartBtn.cloneNode(true);
     //  newGameStartBtn.innerText = "Start Game";
@@ -285,24 +292,26 @@ function randomClick() {
 function humanToComputer(event) {
     let clickedBtn = event.target;
     let playerMark = clickedBtn.dataset.playermark;
-    let currentPlayer;
+    let thisPlayer;
     if (playerMark === "X") {
-        currentPlayer = gameBoard.playerX;
+        thisPlayer = gameBoard.playerX;
     }
     else {
-        currentPlayer = gameBoard.playerO;
+        thisPlayer = gameBoard.playerO;
     }
 
     if (clickedBtn.dataset.ishuman === "human") {
-        currentPlayer.isHuman = false;
+        thisPlayer.isHuman = false;
         clickedBtn.dataset.ishuman = "computer";
         clickedBtn.innerText = "Computer"
+        clickedBtn.nextSibling.innerText = "Computer";
         //randomClick();
     }
     else {
-        currentPlayer.isHuman = true;
+        thisPlayer.isHuman = true;
         clickedBtn.dataset.ishuman = "human";
         clickedBtn.innerText = "Human"
+        clickedBtn.nextSibling.innerText = "Human";
     }
 }
 
